@@ -7,6 +7,7 @@ const snake = [{ x: gridSize * 5, y: gridSize * 5 }];
 let direction = 'right';
 let food = { x: gridSize * 10, y: gridSize * 10 };
 let gameOver = false;
+let countdown = 3;
 
 function drawRect(x, y, color) {
     ctx.fillStyle = color;
@@ -84,6 +85,24 @@ function gameLoop() {
     setTimeout(gameLoop, 100);
 }
 
+function displayCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    countdownElement.innerText = countdown;
+}
+
+function startGame() {
+    const countdownInterval = setInterval(() => {
+        displayCountdown();
+        countdown--;
+
+        if (countdown < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById('countdown').innerText = '';
+            gameLoop();
+        }
+    }, 1000);
+}
+
 document.addEventListener('keydown', event => {
     switch (event.key) {
         case 'ArrowUp':
@@ -100,5 +119,3 @@ document.addEventListener('keydown', event => {
             break;
     }
 });
-
-gameLoop();
